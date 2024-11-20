@@ -29,7 +29,7 @@ const AppBookObject = (params: { book: Book }) => {
 
   return (
     <>
-      <Card sx={{ width: 200, height: 410 }}>
+      <Card sx={{ width: 200, minHeight: 410 }}>
         <CardHeader
           avatar={<AppAvatar user={params.book.creator} />}
           title={params.book.creator.given_name}

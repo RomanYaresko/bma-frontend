@@ -14,7 +14,8 @@ const AppAuthorList = () => {
           sx={{
             display: "flex",
             gap: "1rem",
-            alignItems: "flex-start",
+            alignItems: "stretch",
+            alignContent: "flex-start",
             flexGrow: "1",
             flexWrap: "wrap",
             width: "100%",
@@ -22,7 +23,11 @@ const AppAuthorList = () => {
         >
           <Card sx={{ width: 200, minHeight: 200 }}>
             <CardContent>
-              <AppAuthorCreateForm />
+              <Box
+                sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+              >
+                <AppAuthorCreateForm />
+              </Box>
             </CardContent>
           </Card>
           {authorStore.authors.map((author: Author, index: number) => (

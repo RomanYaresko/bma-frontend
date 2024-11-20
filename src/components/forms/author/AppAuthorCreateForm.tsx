@@ -49,6 +49,7 @@ const AppAuthorCreateForm = () => {
           }}
         />
         <DatePicker
+          minDate={dayjs("1000-01-01")}
           label="Birth date"
           value={dayjs(birthDate)}
           onChange={(newValue) => {

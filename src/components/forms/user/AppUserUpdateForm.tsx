@@ -1,10 +1,11 @@
-import { VisuallyHiddenInput } from "@/components/base/VisualHidenInput";
+import { VisuallyHiddenInput } from "@/components/base/VisualHiddenInput";
 import { routes } from "@/router";
 import { stringifyError } from "@/services";
 import { useUserStore } from "@/stores";
-import { Alert, Button, FormControl, TextField } from "@mui/material";
+import ImageNotSupportedIcon from "@mui/icons-material/ImageNotSupported";
+import { Alert, Box, Button, FormControl, TextField } from "@mui/material";
 import { AxiosError } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AppUserUpdateForm = () => {
@@ -15,6 +16,12 @@ const AppUserUpdateForm = () => {
     userStore.user ? userStore.user.given_name : ""
   );
   const [profileImage, setProfileImage] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (userStore.user) {
+      setGivenName(userStore.user.given_name);
+    }
+  }, [userStore.user]);
 
   const [formError, setFormError] = useState<string | null>(null);
 
@@ -30,6 +37,28 @@ const AppUserUpdateForm = () => {
       const error = e as AxiosError;
       setFormError(stringifyError(error));
     }
+  };
+
+  const getUploadedProfileImage = () => {
+    if (profileImage) {
+      return (
+        <img
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+          src={URL.createObjectURL(profileImage)}
+          alt="image"
+        />
+      );
+    } else if (userStore.user && userStore.user.profile_image) {
+      return (
+        <img
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+          src={userStore.user.profile_image}
+          alt="image"
+        />
+      );
+    }
+
+    return <ImageNotSupportedIcon sx={{ width: "100%", height: "100%" }} />;
   };
 
   return (
@@ -51,6 +80,18 @@ const AppUserUpdateForm = () => {
             setGivenName(e.target.value);
           }}
         />
+        <Box
+          sx={{
+            width: "100%",
+            height: 200,
+            padding: "10px",
+            backgroundColor: "#3b3b3b",
+            borderRadius: "5px",
+            overflow: "hidden",
+          }}
+        >
+          {getUploadedProfileImage()}
+        </Box>
         <Button
           fullWidth
           component="label"
@@ -61,6 +102,7 @@ const AppUserUpdateForm = () => {
           Upload Profile Image
           <VisuallyHiddenInput
             type="file"
+            accept=".png, .jpg, .jpeg"
             onChange={(e) =>
               setProfileImage(e.target.files ? e.target.files[0] : null)
             }

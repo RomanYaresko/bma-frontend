@@ -55,6 +55,7 @@ const AppAuthorUpdateForm = (params: { author: Author }) => {
           }}
         />
         <DatePicker
+          minDate={dayjs("1000-01-01")}
           label="Controlled picker"
           value={dayjs(birthDate)}
           onChange={(newValue) => {

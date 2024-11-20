@@ -1,10 +1,11 @@
-import { VisuallyHiddenInput } from "@/components/base/VisualHidenInput";
+import { VisuallyHiddenInput } from "@/components/base/VisualHiddenInput";
 import { Author, Book } from "@/models";
 import { routes } from "@/router";
 import { stringifyError } from "@/services";
 import { useAuthorStore, useBookStore } from "@/stores";
 import {
   Alert,
+  Box,
   Button,
   FormControl,
   InputLabel,
@@ -45,6 +46,26 @@ const AppBookUpdateForm = (params: { book: Book }) => {
     }
   };
 
+  const getUploadedCover = () => {
+    if (cover) {
+      return (
+        <img
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+          src={URL.createObjectURL(cover)}
+          alt="image"
+        />
+      );
+    }
+
+    return (
+      <img
+        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        src={params.book.cover}
+        alt="image"
+      />
+    );
+  };
+
   return (
     <>
       <FormControl
@@ -83,6 +104,18 @@ const AppBookUpdateForm = (params: { book: Book }) => {
             )}
           </Select>
         </FormControl>
+        <Box
+          sx={{
+            width: "100%",
+            height: 200,
+            padding: "10px",
+            backgroundColor: "#3b3b3b",
+            borderRadius: "5px",
+            overflow: "hidden",
+          }}
+        >
+          {getUploadedCover()}
+        </Box>
         <Button
           fullWidth
           component="label"
@@ -93,6 +126,7 @@ const AppBookUpdateForm = (params: { book: Book }) => {
           Upload Cover
           <VisuallyHiddenInput
             type="file"
+            accept=".png, .jpg, .jpeg"
             onChange={(e) =>
               setCover(e.target.files ? e.target.files[0] : null)
             }

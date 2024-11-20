@@ -1,9 +1,11 @@
-import { VisuallyHiddenInput } from "@/components/base/VisualHidenInput";
+import { VisuallyHiddenInput } from "@/components/base/VisualHiddenInput";
 import { Author } from "@/models";
 import { stringifyError } from "@/services";
 import { useAuthorStore, useBookStore } from "@/stores";
+import ImageNotSupportedIcon from "@mui/icons-material/ImageNotSupported";
 import {
   Alert,
+  Box,
   Button,
   FormControl,
   InputLabel,
@@ -48,6 +50,20 @@ const AppBookCreateForm = () => {
     }
   };
 
+  const getUploadedCover = () => {
+    if (cover) {
+      return (
+        <img
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+          src={URL.createObjectURL(cover)}
+          alt="image"
+        />
+      );
+    }
+
+    return <ImageNotSupportedIcon sx={{ width: "100%", height: "100%" }} />;
+  };
+
   return (
     <>
       <FormControl
@@ -86,6 +102,18 @@ const AppBookCreateForm = () => {
             )}
           </Select>
         </FormControl>
+        <Box
+          sx={{
+            width: "100%",
+            height: 120,
+            padding: "10px",
+            backgroundColor: "#3b3b3b",
+            borderRadius: "5px",
+            overflow: "hidden",
+          }}
+        >
+          {getUploadedCover()}
+        </Box>
         <Button
           component="label"
           role={undefined}
@@ -96,6 +124,7 @@ const AppBookCreateForm = () => {
           Upload Cover
           <VisuallyHiddenInput
             type="file"
+            accept=".png, .jpg, .jpeg"
             onChange={(e) =>
               setCover(e.target.files ? e.target.files[0] : null)
             }

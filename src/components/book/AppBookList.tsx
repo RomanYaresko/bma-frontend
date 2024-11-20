@@ -45,7 +45,8 @@ const AppBookList = () => {
             sx={{
               display: "flex",
               gap: "1rem",
-              alignItems: "flex-start",
+              alignItems: "stretch",
+              alignContent: "flex-start",
               flexGrow: "1",
               flexWrap: "wrap",
               width: "100%",
@@ -53,7 +54,11 @@ const AppBookList = () => {
           >
             <Card sx={{ width: 200, minHeight: 410 }}>
               <CardContent>
-                <AppBookCreateForm />
+                <Box
+                  sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+                >
+                  <AppBookCreateForm />
+                </Box>
               </CardContent>
             </Card>
             {bookStore.books.map((book: Book, index: number) => (

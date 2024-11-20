@@ -26,7 +26,7 @@ const AppAuthorObject = (params: { author: Author }) => {
 
   return (
     <>
-      <Card sx={{ width: 200, height: 200 }}>
+      <Card sx={{ width: 200, minHeight: 200 }}>
         <CardContent>
           <Typography
             sx={{
